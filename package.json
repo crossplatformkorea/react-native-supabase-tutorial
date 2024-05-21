@@ -13,13 +13,17 @@
     "fix:deps": "expo install --fix",
     "lint:all": "bun lint && bun lint:i18n",
     "build:web": "expo export --platform web",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "migrate:dev": "dotenv -e .env -- prisma migrate dev",
+    "migrate:local": "dotenv -e .env -- prisma migrate local",
+    "migrate:deploy": "dotenv -e .env.production -- prisma migrate deploy"
   },
   "dependencies": {
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@expo/match-media": "^0.4.0",
     "@expo/react-native-action-sheet": "^4.1.0",
+    "@prisma/client": "5.14.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
     "@shopify/flash-list": "1.6.4",
@@ -95,6 +99,7 @@
     "jest-expo": "~51.0.1",
     "jest-fetch-mock": "^3.0.3",
     "prettier": "^3.2.5",
+    "prisma": "^5.14.0",
     "react-test-renderer": "18.2.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

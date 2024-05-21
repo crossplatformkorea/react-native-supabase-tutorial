@@ -28,9 +28,9 @@ export default function Details(): JSX.Element {
         <Button
           onPress={async () => {
             try {
-              const {error} = await supabase
-                .from('todos')
-                .insert({id: 1, todo: 'Buy Milk'});
+              const {error} = await supabase.from('User').insert({
+                email: 'aa@aa.aa',
+              });
 
               console.log('error', error);
             } catch (err) {

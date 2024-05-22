@@ -29,13 +29,14 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Supabase Tutorial',
   scheme: 'supabase_tutorial',
-  slug: 'supabase_tutorial_slug',
+  slug: 'supabase-tutorial',
   privacy: 'public',
   platforms: ['ios', 'android', 'web'],
   version,
   orientation: 'default',
   icon: './assets/icon.png',
   plugins: [
+    '@react-native-google-signin/google-signin',
     [
       'expo-build-properties',
       {
@@ -71,7 +72,10 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   extra: {
     supabaseUrl: process.env.supabaseUrl,
     supabaseAnonKey: process.env.supabaseAnonKey,
-    // eas: {projectId: ''},
+    googleClientIdAndroid: process.env.googleClientIdAndroid,
+    googleClientIdIOS: process.env.googleClientIdIOS,
+    googleClientIdWeb: process.env.googleClientIdWeb,
+    eas: {projectId: '1f68ead4-c229-48b4-9193-f4a4b2cd8c2f'},
   },
   updates: {
     fallbackToCacheTimeout: 0,
@@ -80,10 +84,8 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   },
   assetBundlePatterns: ['**/*'],
   userInterfaceStyle: 'automatic',
-  locales: {
-    ko: './assets/langs/ios/ko.json',
-  },
   ios: {
+    googleServicesFile: './GoogleService-Info.plist',
     buildNumber: buildNumber.toString(),
     bundleIdentifier: 'io.supabasetutorial',
     associatedDomains: [`applinks:${DEEP_LINK_URL}`],
@@ -93,6 +95,13 @@ export default ({config}: ConfigContext): ExpoConfig => ({
     },
     infoPlist: {
       CFBundleAllowMixedLocalizations: true,
+      CFBundleURLTypes: [
+        {
+          CFBundleURLSchemes: [
+            'com.googleusercontent.apps.3787908749-2qdl7esl5h52d0uhhaul8fsbso5o4sp8',
+          ],
+        },
+      ],
     },
   },
   android: {
@@ -110,6 +119,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       foregroundImage: './assets/adaptive_icon.png',
       backgroundColor: '#2F2F2F',
     },
+    googleServicesFile: './google-services.json',
     package: 'io.supabasetutorial',
     intentFilters: [
       {

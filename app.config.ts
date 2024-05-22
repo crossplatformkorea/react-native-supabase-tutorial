@@ -27,7 +27,7 @@ const buildNumber = 1;
 
 export default ({config}: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'SupabaseTutorial',
+  name: 'Supabase Tutorial',
   scheme: 'supabase_tutorial',
   slug: 'supabase_tutorial_slug',
   privacy: 'public',

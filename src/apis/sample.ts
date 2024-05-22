@@ -1,4 +1,4 @@
-import {ROOT_URL} from '../../config';
+// import {ROOT_URL} from '../../config';
 
 export const sample = async (
   body: Record<string, unknown>,
@@ -15,7 +15,7 @@ export const sample = async (
   };
 
   try {
-    const res: Response = await fetch(`${ROOT_URL}/sample`, fetchOption);
+    const res: Response = await fetch(`/sample`, fetchOption);
 
     return res;
   } catch (err: any) {

@@ -94,7 +94,6 @@ export default function Index(): JSX.Element {
           onPress={() => push('/details')}
           style={css`
             margin-top: 28px;
-            margin-bottom: 40px;
           `}
           styles={{
             text: css`
@@ -102,6 +101,19 @@ export default function Index(): JSX.Element {
             `,
           }}
           text={t('SEE_DETAILS')}
+        />
+        <Button
+          onPress={() => push('/audio')}
+          style={css`
+            margin-top: 28px;
+            margin-bottom: 40px;
+          `}
+          styles={{
+            text: css`
+              font-family: Pretendard-Bold;
+            `,
+          }}
+          text="음성 녹음"
         />
       </Content>
     </Container>

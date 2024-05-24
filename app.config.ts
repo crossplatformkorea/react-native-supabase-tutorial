@@ -60,6 +60,13 @@ export default ({config}: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
+    [
+      'expo-av',
+      {
+        microphonePermission:
+          '$(PRODUCT_NAME)은(는) 음성 녹음 및 오디오 입력 기능을 제공하기 위해 마이크 접근 권한이 필요합니다. 이러한 기능을 계속 사용하려면 마이크 접근을 허용해 주세요.',
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

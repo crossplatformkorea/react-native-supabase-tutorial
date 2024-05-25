@@ -4,6 +4,8 @@ import {css} from '@emotion/native';
 import {IconButton, Typography} from 'dooboo-ui';
 import {Audio} from 'expo-av';
 
+import {uploadFileToSupabase} from '../supabase';
+
 export default function AudioPage(): JSX.Element {
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [recording, setRecording] = useState<Audio.Recording>();
@@ -77,6 +79,20 @@ export default function AudioPage(): JSX.Element {
     }
   };
 
+  const uploadFile = async (): Promise<void> => {
+    try {
+      const path = await uploadFileToSupabase({
+        file: uri!,
+        bucket: 'audios',
+        destPath: 'audio.m4a',
+      });
+
+      console.log('Uploaded to', path);
+    } catch (err) {
+      console.error('Failed to upload file', err);
+    }
+  };
+
   return (
     <SafeAreaView
       style={css`
@@ -98,6 +114,8 @@ export default function AudioPage(): JSX.Element {
         onPress={uri ? (isPlaying ? sound?.stopAsync : playSound) : undefined}
         size={40}
       />
+      <Typography.Heading3>Upload</Typography.Heading3>
+      {uri ? <IconButton icon="Upload" onPress={uploadFile} size={40} /> : null}
       <View
         style={css`
           height: 80px;

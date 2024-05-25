@@ -14,3 +14,23 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: false,
   },
 });
+
+export const uploadFileToSupabase = async ({
+  file,
+  bucket,
+  destPath,
+}: {
+  file: string;
+  bucket: string;
+  destPath: string;
+}): Promise<string> => {
+  const {data, error} = await supabase.storage
+    .from(bucket)
+    .upload(destPath, file, {});
+
+  if (error) {
+    throw error;
+  }
+
+  return data.path;
+};

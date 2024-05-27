@@ -3,6 +3,7 @@ import {SafeAreaView, View} from 'react-native';
 import {css} from '@emotion/native';
 import {IconButton, Typography} from 'dooboo-ui';
 import {Audio} from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 
 import {uploadFileToSupabase} from '../supabase';
 
@@ -54,7 +55,7 @@ export default function AudioPage(): JSX.Element {
   };
 
   const stopRecording = async (): Promise<void> => {
-    console.log('Stopping recoasync async recording..');
+    console.log('Stopping recording..');
     setRecording(undefined);
     await recording?.stopAndUnloadAsync();
     await Audio.setAudioModeAsync({allowsRecordingIOS: false});
@@ -81,8 +82,12 @@ export default function AudioPage(): JSX.Element {
 
   const uploadFile = async (): Promise<void> => {
     try {
+      const base64 = await FileSystem.readAsStringAsync(uri!, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
       const path = await uploadFileToSupabase({
-        file: uri!,
+        base64: base64,
         bucket: 'audios',
         destPath: 'audio.m4a',
       });

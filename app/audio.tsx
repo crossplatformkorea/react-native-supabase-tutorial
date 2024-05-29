@@ -1,5 +1,9 @@
 import {useEffect, useState} from 'react';
 import {SafeAreaView, View} from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import {css} from '@emotion/native';
 import {IconButton, Typography} from 'dooboo-ui';
 import {Audio} from 'expo-av';
@@ -13,9 +17,21 @@ export default function AudioPage(): JSX.Element {
   const [uri, setUri] = useState<string>();
   const [sound, setSound] = useState<Audio.Sound>();
   const [isPlaying, setIsPlaying] = useState(false);
+  const width = useSharedValue(0);
+
+  console.log('rerender');
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      width: `${width.value}%`,
+    };
+  }, []);
 
   const _playBack: Audio.Sound['_onPlaybackStatusUpdate'] = (status) => {
     if (status.isLoaded) {
+      width.value =
+        (status.positionMillis / (status?.durationMillis || 0)) * 100;
+
       if (status.didJustFinish) {
         setIsPlaying(false);
       }
@@ -65,6 +81,13 @@ export default function AudioPage(): JSX.Element {
   };
 
   const playSound = async (): Promise<void> => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      sound?.stopAsync();
+
+      return;
+    }
+
     if (uri) {
       setIsPlaying(true);
 
@@ -116,9 +139,36 @@ export default function AudioPage(): JSX.Element {
       <Typography.Heading3>Play</Typography.Heading3>
       <IconButton
         icon={isPlaying ? 'Stop' : uri ? 'Play' : 'Question'}
-        onPress={uri ? (isPlaying ? sound?.stopAsync : playSound) : undefined}
+        onPress={uri ? playSound : undefined}
         size={40}
       />
+      {/* Playing Bar */}
+      <View
+        style={css`
+          flex-direction: row;
+          padding: 12px;
+        `}
+      >
+        <View
+          style={css`
+            flex: 1;
+            background-color: black;
+            height: 12px;
+
+            flex-direction: row;
+          `}
+        >
+          <Animated.View
+            style={[
+              css`
+                background-color: white;
+                height: 12px;
+              `,
+              animatedStyle,
+            ]}
+          />
+        </View>
+      </View>
       <Typography.Heading3>Upload</Typography.Heading3>
       {uri ? <IconButton icon="Upload" onPress={uploadFile} size={40} /> : null}
       <View
